@@ -1,0 +1,250 @@
+package com.ocnyang.compose_spinkit_demo
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.ocnyang.compose_loading.ArcInRing
+import com.ocnyang.compose_loading.ChasingDots
+import com.ocnyang.compose_loading.ChasingTwoDots
+import com.ocnyang.compose_loading.Circle
+import com.ocnyang.compose_loading.CubeGrid
+import com.ocnyang.compose_loading.DoubleArc
+import com.ocnyang.compose_loading.DoubleBounce
+import com.ocnyang.compose_loading.DoubleRhombus
+import com.ocnyang.compose_loading.DoubleSector
+import com.ocnyang.compose_loading.FadingCircle
+import com.ocnyang.compose_loading.FoldingCube
+import com.ocnyang.compose_loading.InstaSpinner
+import com.ocnyang.compose_loading.OppositeArc
+import com.ocnyang.compose_loading.Pulse
+import com.ocnyang.compose_loading.Rainbow
+import com.ocnyang.compose_loading.RotatingPlane
+import com.ocnyang.compose_loading.ThreeArc
+import com.ocnyang.compose_loading.ThreeBounce
+import com.ocnyang.compose_loading.ThreeTadpole
+import com.ocnyang.compose_loading.WanderingCubes
+import com.ocnyang.compose_loading.Wave
+import com.ocnyang.compose_loading.Windmill
+import com.ocnyang.compose_spinkit_demo.ui.theme.ComposeSpinKitTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            ComposeSpinKitTheme {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    Greeting()
+                }
+            }
+        }
+    }
+}
+
+private val colorList = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta, Color.Cyan)
+
+private val Big = 2 to 80.dp
+private val Normal = 4 to 40.dp
+private val Boolean.Size: Pair<Int, Dp> get() = if (this) Big else Normal
+private val Speeds = listOf("Normal" to 2000, "Fast" to 1000, "Slow" to 6000)
+
+@Composable
+fun Greeting() {
+    val showColor = remember { mutableStateOf(false) }
+    val showName = remember { mutableStateOf(false) }
+    val showBig = remember { mutableStateOf(false) }
+    val showSpeedType = remember { mutableStateOf(0) }
+
+    val solidColors = MaterialTheme.colorScheme.primary.let {
+        listOf(it, it.copy(0.9f), it.copy(0.6f), it.copy(0.3f))
+    }
+
+    val colors = remember { mutableStateOf(solidColors) }
+
+    LaunchedEffect(key1 = showColor.value, block = {
+        if (showColor.value) {
+            colors.value = colorList
+        } else {
+            colors.value = solidColors
+        }
+    })
+
+    val list: List<Pair<@Composable () -> Unit, String>> = listOf(
+        @Composable {
+            DoubleSector(
+                colors = colors.value,
+                count = 2,
+                size = showBig.value.Size.second,
+                durationMillis = showSpeedType.value.let { Speeds[it].second }
+            )
+        } to "DoubleSector",
+        @Composable {
+            ArcInRing(
+                modifier = Modifier.size(showBig.value.Size.second),
+                ringColor = colors.value[0].copy(alpha = 0.3f),
+                arcColor = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+            )
+        } to "ArcInCircle",
+        @Composable {
+            Rainbow(
+                colors = colors.value,
+                size = showBig.value.Size.second,
+                durationMillis = Speeds[showSpeedType.value].second
+            )
+        } to "Rainbow",
+        @Composable {
+            OppositeArc(
+                colors = colors.value,
+                modifier = Modifier.size(showBig.value.Size.second),
+                durationMillis = Speeds[showSpeedType.value].second
+            )
+        } to "OppositeArc",
+        @Composable {
+            Windmill(
+                colors = colors.value,
+                modifier = Modifier.size(showBig.value.Size.second),
+                durationMillis = Speeds[showSpeedType.value].second
+            )
+        } to "Windmill",
+        @Composable {
+            DoubleRhombus(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "DoubleRhombus",
+        @Composable {
+            ThreeTadpole(
+                headColor = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                modifier = Modifier.size(showBig.value.Size.second)
+            )
+        } to "ThreeTadpole",
+        @Composable {
+            ThreeArc(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "ThreeArc",
+        @Composable { DoubleArc() } to "DoubleArc",
+        @Composable { ChasingDots() } to "ChasingDots",
+        @Composable { ChasingTwoDots() } to "ChasingTwoDots",
+        @Composable { Circle() } to "Circle",
+        @Composable { CubeGrid() } to "CubeGrid",
+        @Composable { DoubleBounce() } to "DoubleBounce",
+        @Composable { FadingCircle() } to "FadingCircle",
+        @Composable { FoldingCube() } to "FoldingCube",
+        @Composable { InstaSpinner() } to "InstaSpinner",
+        @Composable { Pulse() } to "Pulse",
+        @Composable { RotatingPlane() } to "RotatingPlane",
+        @Composable { ThreeBounce() } to "ThreeBounce",
+        @Composable { WanderingCubes() } to "WanderingCubes",
+        @Composable { Wave() } to "Wave",
+    )
+
+    Column {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            columns = GridCells.Fixed(showBig.value.Size.first),
+            content = {
+                items(list) { item ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .padding(0.5.dp)
+                            .background(Color.White),
+                        contentAlignment = Alignment.Center,
+                        content = {
+                            item.first.invoke()
+                            if (showName.value) {
+                                Text(
+                                    modifier = Modifier.align(Alignment.BottomCenter),
+                                    text = item.second,
+                                    fontSize = 10.sp,
+                                    color = Color.LightGray,
+                                )
+                            }
+                        }
+                    )
+                }
+            })
+
+        NavigationBar(containerColor = Color.White, modifier = Modifier.shadow(elevation = 3.dp)) {
+            Column {
+                Row {
+                    TextCheckBox(modifier = Modifier.wrapContentHeight().weight(1f), checked = showName, label = "ViewName")
+                    TextCheckBox(modifier = Modifier.wrapContentHeight().weight(1f), checked = showColor, label = "Colorful")
+                    TextCheckBox(modifier = Modifier.wrapContentHeight().weight(1f), checked = showBig, label = "Big")
+                }
+                Row {
+                    Spacer(modifier = Modifier.weight(1f))
+                    TextButton(
+                        modifier = Modifier.wrapContentHeight().weight(1f),
+                        onClick = {
+                            showSpeedType.value = (showSpeedType.value + 1) % Speeds.size
+                        },
+                        content = {
+                            Text(text = "Speed: ${Speeds[showSpeedType.value].first}", fontSize = 12.sp)
+                        })
+
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+
+        }
+    }
+}
+
+
+@Composable
+fun TextCheckBox(modifier: Modifier, checked: MutableState<Boolean>, label: String) = Row(
+    modifier = modifier,
+    horizontalArrangement = Arrangement.Center,
+    verticalAlignment = Alignment.CenterVertically
+) {
+    Checkbox(
+        checked = checked.value,
+        onCheckedChange = {
+            checked.value = !checked.value
+        })
+
+    Text(text = label, fontSize = 12.sp)
+}
+
+
+
