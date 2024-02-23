@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ocnyang.compose_loading.ArcInRing
@@ -160,20 +161,104 @@ fun Greeting() {
                 size = showBig.value.Size.second
             )
         } to "ThreeArc",
-        @Composable { DoubleArc() } to "DoubleArc",
-        @Composable { ChasingDots() } to "ChasingDots",
-        @Composable { ChasingTwoDots() } to "ChasingTwoDots",
-        @Composable { Circle() } to "Circle",
-        @Composable { CubeGrid() } to "CubeGrid",
-        @Composable { DoubleBounce() } to "DoubleBounce",
-        @Composable { FadingCircle() } to "FadingCircle",
-        @Composable { FoldingCube() } to "FoldingCube",
-        @Composable { InstaSpinner() } to "InstaSpinner",
-        @Composable { Pulse() } to "Pulse",
-        @Composable { RotatingPlane() } to "RotatingPlane",
-        @Composable { ThreeBounce() } to "ThreeBounce",
-        @Composable { WanderingCubes() } to "WanderingCubes",
-        @Composable { Wave() } to "Wave",
+        @Composable {
+            DoubleArc(
+                color = colors.value[0] to colors.value[1],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "DoubleArc",
+        @Composable {
+            ChasingDots(
+                colors = colors.value,
+                size = showBig.value.Size.second,
+                durationMillis = Speeds[showSpeedType.value].second
+            )
+        } to "ChasingDots",
+        @Composable {
+            ChasingTwoDots(
+                color = colors.value[0] to colors.value[1],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "ChasingTwoDots",
+        @Composable {
+            Circle(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "Circle",
+        @Composable {
+            CubeGrid(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "CubeGrid",
+        @Composable {
+            DoubleBounce(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "DoubleBounce",
+        @Composable {
+            FadingCircle(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "FadingCircle",
+        @Composable {
+            FoldingCube(
+                color = colors.value[0],
+                durationMillisPerFraction = Speeds[showSpeedType.value].second / 4,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "FoldingCube",
+        @Composable {
+            InstaSpinner(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "InstaSpinner",
+        @Composable {
+            Pulse(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "Pulse",
+        @Composable {
+            RotatingPlane(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "RotatingPlane",
+        @Composable {
+            ThreeBounce(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "ThreeBounce",
+        @Composable {
+            WanderingCubes(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = DpSize(showBig.value.Size.second, showBig.value.Size.second)
+            )
+        } to "WanderingCubes",
+        @Composable {
+            Wave(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "Wave",
     )
 
     Column {

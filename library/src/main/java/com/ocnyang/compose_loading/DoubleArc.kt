@@ -21,12 +21,12 @@ import com.ocnyang.compose_loading.transition.fractionTransition
 @Preview
 @Composable
 fun DoubleArc(
+    modifier: Modifier = Modifier,
     size: Dp = 30.dp,
-    modifier: Modifier = Modifier.size(size),
     durationMillis: Int = 2000,
     delayMillis: Int = 0,
     strokeWidth: Float = 8f,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Pair<Color,Color> = MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.primary,
 ) {
     val transition = rememberInfiniteTransition(label = "")
 
@@ -48,10 +48,10 @@ fun DoubleArc(
         easing = EaseInOut
     )
 
-    Canvas(modifier = modifier) {
+    Canvas(modifier = modifier.size(size)) {
         rotate(degrees = angleMultiplier2.value) {
             drawArc(
-                color = color,
+                color = color.first,
                 startAngle = 0f,
                 sweepAngle = 180f,
                 useCenter = false,
@@ -64,7 +64,7 @@ fun DoubleArc(
             rotate(degrees = angleMultiplier1.value)
         }) {
             drawArc(
-                color = color,
+                color = color.second,
                 startAngle = 0f,
                 sweepAngle = 60f,
                 useCenter = false,

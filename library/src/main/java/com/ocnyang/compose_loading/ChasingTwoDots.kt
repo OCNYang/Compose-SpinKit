@@ -23,7 +23,7 @@ fun ChasingTwoDots(
     durationMillis: Int = 2000,
     durationBetweenDotsMillis: Int = 400,
     size: DpSize = DpSize(40.dp, 40.dp),
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Pair<Color,Color> = MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.primary,
 ) {
     val transition = rememberInfiniteTransition(label = "")
 
@@ -69,7 +69,7 @@ fun ChasingTwoDots(
         val offsetX1 = -(radius * sin(Math.toRadians(angle1))).toFloat() + (this.size.width / 2)
         val offsetY1 = (radius * cos(Math.toRadians(angle1))).toFloat() + (this.size.height / 2)
         drawCircle(
-            color = color,
+            color = color.first,
             radius = radius1,
             center = Offset(offsetX1,  offsetY1)
         )
@@ -79,7 +79,7 @@ fun ChasingTwoDots(
         val offsetX2 = -(radius * sin(Math.toRadians(angle2))).toFloat() + (this.size.width / 2)
         val offsetY2 = (radius * cos(Math.toRadians(angle2))).toFloat() + (this.size.height / 2)
         drawCircle(
-            color = color,
+            color = color.second,
             radius = radius2,
             center = Offset(offsetX2,  offsetY2)
         )

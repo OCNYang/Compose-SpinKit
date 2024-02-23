@@ -29,9 +29,9 @@ fun ChasingDots(
     durationMillis: Int = 2000,
     delayBetweenDotsMillis: Int = durationMillis * 4 / 6 / 3 / 6,//默认值来历（大约值）：总循环时间(durationMillis*4)/总循环圈数(6)/球发布在圈的比例一半(3)/球数(6)
     size: Dp = 40.dp,
-    color: Color = MaterialTheme.colorScheme.primary,
     circleRatio: Float = 0.25f,
-    dotsCount: Int = DOTS_COUNT
+    dotsCount: Int = DOTS_COUNT,
+    colors: List<Color> = List(dotsCount) { MaterialTheme.colorScheme.primary },
 ) {
     val transition = rememberInfiniteTransition(label = "")
 
@@ -56,7 +56,7 @@ fun ChasingDots(
             val offsetX = -(pathRadius * sin(Math.toRadians(angle))).toFloat() + (this.size.width / 2)
             val offsetY = (pathRadius * cos(Math.toRadians(angle))).toFloat() + (this.size.height / 2)
             drawCircle(
-                color = color,
+                color = colors[index % colors.size],
                 radius = radiusCommon * (1 + circleRatio * index),
                 center = Offset(offsetX, offsetY)
             )

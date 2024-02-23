@@ -79,7 +79,7 @@ fun Wave(
         Spacer(modifier = Modifier.width(size * 5 / 75))
         Surface(
             modifier = Modifier
-                .size(size * 10 / 75)
+                .size(size *8 / 75)
                 .aspectRatio(aspectRatio1.value),
             color = color,
             shape = shape
@@ -87,7 +87,7 @@ fun Wave(
         Spacer(modifier = Modifier.width(size * 5 / 75))
         Surface(
             modifier = Modifier
-                .size(size * 10 / 75)
+                .size(size *8 / 75)
                 .aspectRatio(aspectRatio2.value),
             color = color,
             shape = shape
@@ -95,7 +95,7 @@ fun Wave(
         Spacer(modifier = Modifier.width(size * 5 / 75))
         Surface(
             modifier = Modifier
-                .size(size * 10 / 75)
+                .size(size *8 / 75)
                 .aspectRatio(aspectRatio3.value),
             color = color,
             shape = shape
@@ -103,7 +103,7 @@ fun Wave(
         Spacer(modifier = Modifier.width(size * 5 / 75))
         Surface(
             modifier = Modifier
-                .size(size * 10 / 75)
+                .size(size *8 / 75)
                 .aspectRatio(aspectRatio4.value),
             color = color,
             shape = shape
@@ -111,7 +111,7 @@ fun Wave(
         Spacer(modifier = Modifier.width(size * 5 / 75))
         Surface(
             modifier = Modifier
-                .size(size * 10 / 75)
+                .size(size *8 / 75)
                 .aspectRatio(aspectRatio5.value),
             color = color,
             shape = shape
