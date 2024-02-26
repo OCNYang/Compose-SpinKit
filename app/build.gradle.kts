@@ -66,4 +66,6 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
+    implementation("com.github.jitpack:android-example:1.0.1")
+
 }
