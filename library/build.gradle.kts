@@ -53,3 +53,17 @@ dependencies {
 
     implementation("com.github.jitpack:android-example:1.0.1")
 }
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.ocnyang"
+            artifactId = "compose-spinkit"
+            version = "1.0.3"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+}
