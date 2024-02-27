@@ -41,6 +41,7 @@ import com.ocnyang.compose_loading.ArcInRing
 import com.ocnyang.compose_loading.ChasingDots
 import com.ocnyang.compose_loading.ChasingTwoDots
 import com.ocnyang.compose_loading.Circle
+import com.ocnyang.compose_loading.CircleWindmill
 import com.ocnyang.compose_loading.CubeGrid
 import com.ocnyang.compose_loading.DoubleArc
 import com.ocnyang.compose_loading.DoubleBounce
@@ -89,7 +90,7 @@ fun Greeting() {
     val showSpeedType = remember { mutableStateOf(0) }
 
     val solidColors = MaterialTheme.colorScheme.primary.let {
-        listOf(it, it.copy(0.9f), it.copy(0.6f), it.copy(0.3f))
+        listOf(Color(0xff333333), Color(0xff666666), Color(0xff999999), Color(0xffbbbbbb))
     }
 
     val colors = remember { mutableStateOf(solidColors) }
@@ -259,6 +260,13 @@ fun Greeting() {
                 size = showBig.value.Size.second
             )
         } to "Wave",
+        @Composable {
+            CircleWindmill(
+                colors = colors.value,
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "CircleWindmill",
     )
 
     Column {
