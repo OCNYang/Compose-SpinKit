@@ -1,9 +1,11 @@
 package com.ocnyang.compose_spinkit_demo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -62,13 +65,18 @@ import com.ocnyang.compose_loading.Wave
 import com.ocnyang.compose_loading.Windmill
 import com.ocnyang.compose_spinkit_demo.ui.theme.ComposeSpinKitTheme
 
+private const val TYPE_INDEX = "index"
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val type = intent.getIntExtra(TYPE_INDEX, -1)
+
         setContent {
             ComposeSpinKitTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting()
+                    Greeting(type = type)
                 }
             }
         }
@@ -83,7 +91,7 @@ private val Boolean.Size: Pair<Int, Dp> get() = if (this) Big else Normal
 private val Speeds = listOf("Normal" to 2000, "Fast" to 1000, "Slow" to 6000)
 
 @Composable
-fun Greeting() {
+fun Greeting(type: Int) {
     val showColor = remember { mutableStateOf(false) }
     val showName = remember { mutableStateOf(false) }
     val showBig = remember { mutableStateOf(false) }
@@ -270,32 +278,57 @@ fun Greeting() {
     )
 
     Column {
-        LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth().weight(1f),
-            columns = GridCells.Fixed(showBig.value.Size.first),
-            content = {
-                items(list) { item ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(1f)
-                            .padding(0.5.dp)
-                            .background(Color.White),
-                        contentAlignment = Alignment.Center,
-                        content = {
-                            item.first.invoke()
-                            if (showName.value) {
-                                Text(
-                                    modifier = Modifier.align(Alignment.BottomCenter),
-                                    text = item.second,
-                                    fontSize = 10.sp,
-                                    color = Color.LightGray,
-                                )
+        if (type == -1) {
+            val context = LocalContext.current
+            LazyVerticalGrid(
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                columns = GridCells.Fixed(showBig.value.Size.first),
+                content = {
+                    itemsIndexed(list) { index, item ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                                .padding(0.5.dp)
+                                .background(Color.White).clickable {
+                                    context.startActivity(Intent(context, MainActivity::class.java).apply { putExtra(TYPE_INDEX, index) })
+                                },
+                            contentAlignment = Alignment.Center,
+                            content = {
+                                item.first.invoke()
+                                if (showName.value) {
+                                    Text(
+                                        modifier = Modifier.align(Alignment.BottomCenter),
+                                        text = item.second,
+                                        fontSize = 10.sp,
+                                        color = Color.LightGray,
+                                    )
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
+                })
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(0.5.dp)
+                    .background(Color.White),
+                contentAlignment = Alignment.Center,
+                content = {
+                    list[type].first.invoke()
+                    if (showName.value) {
+                        Text(
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                            text = list[type].second,
+                            fontSize = 10.sp,
+                            color = Color.LightGray,
+                        )
+                    }
                 }
-            })
+            )
+        }
 
         NavigationBar(containerColor = Color.White, modifier = Modifier.shadow(elevation = 3.dp)) {
             Column {
@@ -318,7 +351,6 @@ fun Greeting() {
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
-
         }
     }
 }
