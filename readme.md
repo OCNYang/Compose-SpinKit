@@ -16,7 +16,9 @@ Add loading spinners in Android Jetpack Compose.
 
 ```groovy
 dependencies {
-    implementation 'com.github.OCNYang:Compose-SpinKit:1.0.3'
+    implementation("com.github.OCNYang:Compose-SpinKit:1.0.4") {
+        exclude("com.github.jitpack")
+    }
 }
 ```
 
