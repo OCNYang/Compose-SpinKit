@@ -5,11 +5,10 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,30 +26,37 @@ import kotlin.math.sin
 @Preview
 @Composable
 fun DoubleRhombus(
+    modifier: Modifier = Modifier,
     size: Dp = 50.dp,
-    modifier: Modifier = Modifier.size(size),
     durationMillis: Int = 2000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 8f,
+    strokeWidthRatio: Float = 0.04f,
     color: Color = MaterialTheme.colorScheme.primary,
     crossColor: Color = color.copy(alpha = 0.6f)
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "DoubleRhombus")
 
-    val sizePx = with(LocalDensity.current) {
-        size.toPx()
+    val density = LocalDensity.current
+    val sizePx = remember(size, density) {
+        with(density) { size.toPx() }
     }
 
-    val diagonal = ((sizePx - (sin(Math.toRadians(45.0) * strokeWidth * 4))) / 2).toFloat()
+    val strokeWidth = sizePx * strokeWidthRatio
+    val diagonal = remember(sizePx, strokeWidth) {
+        ((sizePx - (sin(Math.toRadians(45.0) * strokeWidth * 4))) / 2).toFloat()
+    }
 
-    val pointLeft = 0f to (sizePx / 2f)
-    val pointTopLeft = (sizePx / 4f) to sizePx / 2f - diagonal / 2f
-    val pointMid = (sizePx / 2f) to (sizePx / 2f)
-    val pointBottomLeft = (sizePx / 4f) to sizePx / 2f + diagonal / 2f
-    val pointTopRight = pointTopLeft.first + diagonal to pointTopLeft.second
-    val pointRight = sizePx to sizePx / 2f
-    val pointBottomRight = pointTopRight.first to pointBottomLeft.second
-
+    val points = remember(sizePx, diagonal) {
+        RhombusPoints(
+            left = 0f to (sizePx / 2f),
+            topLeft = (sizePx / 4f) to sizePx / 2f - diagonal / 2f,
+            mid = (sizePx / 2f) to (sizePx / 2f),
+            bottomLeft = (sizePx / 4f) to sizePx / 2f + diagonal / 2f,
+            topRight = (sizePx / 4f + diagonal) to (sizePx / 2f - diagonal / 2f),
+            right = sizePx to sizePx / 2f,
+            bottomRight = (sizePx / 4f + diagonal) to (sizePx / 2f + diagonal / 2f)
+        )
+    }
 
     val translateMultiplier = transition.fractionTransition(
         initialValue = 0f,
@@ -61,27 +67,27 @@ fun DoubleRhombus(
         easing = EaseInOutQuad
     )
 
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.size(size)) {
             drawPath(
                 path = Path().apply {
-                    moveTo(pointMid.first, pointMid.second - translateMultiplier.value)
-                    lineTo(pointMid.first + translateMultiplier.value, pointMid.second)
-                    lineTo(pointMid.first, pointMid.second + translateMultiplier.value)
-                    lineTo(pointMid.first - translateMultiplier.value, pointMid.second)
+                    moveTo(points.mid.first, points.mid.second - translateMultiplier.value)
+                    lineTo(points.mid.first + translateMultiplier.value, points.mid.second)
+                    lineTo(points.mid.first, points.mid.second + translateMultiplier.value)
+                    lineTo(points.mid.first - translateMultiplier.value, points.mid.second)
                     close()
                 },
-                color = color.copy(alpha = 0.6f),
+                color = crossColor,
                 style = Fill
             )
 
             translate(left = translateMultiplier.value) {
                 drawPath(
                     path = Path().apply {
-                        moveTo(pointLeft.first, pointLeft.second)
-                        lineTo(pointTopLeft.first, pointTopLeft.second)
-                        lineTo(pointMid.first, pointMid.second)
-                        lineTo(pointBottomLeft.first, pointBottomLeft.second)
+                        moveTo(points.left.first, points.left.second)
+                        lineTo(points.topLeft.first, points.topLeft.second)
+                        lineTo(points.mid.first, points.mid.second)
+                        lineTo(points.bottomLeft.first, points.bottomLeft.second)
                         close()
                     },
                     color = color,
@@ -89,14 +95,13 @@ fun DoubleRhombus(
                 )
             }
 
-            translate(left = -translateMultiplier.value)
-            {
+            translate(left = -translateMultiplier.value) {
                 drawPath(
                     path = Path().apply {
-                        moveTo(pointMid.first, pointMid.second)
-                        lineTo(pointTopRight.first, pointTopRight.second)
-                        lineTo(pointRight.first, pointRight.second)
-                        lineTo(pointBottomRight.first, pointBottomRight.second)
+                        moveTo(points.mid.first, points.mid.second)
+                        lineTo(points.topRight.first, points.topRight.second)
+                        lineTo(points.right.first, points.right.second)
+                        lineTo(points.bottomRight.first, points.bottomRight.second)
                         close()
                     },
                     color = color,
@@ -106,3 +111,13 @@ fun DoubleRhombus(
         }
     }
 }
+
+private data class RhombusPoints(
+    val left: Pair<Float, Float>,
+    val topLeft: Pair<Float, Float>,
+    val mid: Pair<Float, Float>,
+    val bottomLeft: Pair<Float, Float>,
+    val topRight: Pair<Float, Float>,
+    val right: Pair<Float, Float>,
+    val bottomRight: Pair<Float, Float>
+)

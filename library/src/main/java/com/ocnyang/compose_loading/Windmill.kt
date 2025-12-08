@@ -22,10 +22,9 @@ fun Windmill(
     modifier: Modifier = Modifier.size(40.dp),
     durationMillis: Int = 4000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 8f,
     colors: List<Color> = List(4) { MaterialTheme.colorScheme.primary },
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "Windmill")
 
     val angleMultiplier = transition.fractionTransition(
         initialValue = 0f,

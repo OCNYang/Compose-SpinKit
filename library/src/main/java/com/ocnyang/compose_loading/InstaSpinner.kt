@@ -1,135 +1,54 @@
 package com.ocnyang.compose_loading
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOut
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ocnyang.compose_loading.transition.fractionTransition
 
+private const val DEFAULT_SEGMENT_COUNT = 8
+
+@Preview(showBackground = true)
 @Composable
 fun InstaSpinner(
     modifier: Modifier = Modifier,
     durationMillis: Int = 1000,
     size: Dp = 40.dp,
     color: Color = MaterialTheme.colorScheme.primary,
-    isRefreshing: Boolean = false
+    segmentCount: Int = DEFAULT_SEGMENT_COUNT
 ) {
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "InstaSpinner")
 
-    val alpha1 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        easing = EaseInOut
-    )
-    val alpha2 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis / 8,
-        easing = EaseInOut
-    )
-    val alpha3 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 2 / 8,
-        easing = EaseInOut
-    )
-    val alpha4 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 3 / 8,
-        easing = EaseInOut
-    )
-    val alpha5 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 4 / 8,
-        easing = EaseInOut
-    )
-    val alpha6 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 5 / 8,
-        easing = EaseInOut
-    )
-    val alpha7 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 6 / 8,
-        easing = EaseInOut
-    )
-    val alpha8 = transition.fractionTransition(
-        initialValue = 1f,
-        targetValue = 0.1f,
-        durationMillis = durationMillis,
-        offsetMillis = durationMillis * 7 / 8,
-        easing = EaseInOut
-    )
-
-    val rotateDegree = remember {
-        Animatable(0f)
+    val alphas = (0 until segmentCount).map { index ->
+        transition.fractionTransition(
+            initialValue = 1f,
+            targetValue = 0.1f,
+            durationMillis = durationMillis,
+            offsetMillis = durationMillis / segmentCount * index,
+            easing = EaseInOut
+        )
     }
 
-    LaunchedEffect(key1 = isRefreshing) {
-        if (isRefreshing) {
-            rotateDegree.animateTo(
-                targetValue = 360f * 2,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(
-                        durationMillis = durationMillis * 2,
-                        easing = LinearEasing
-                    )
-                )
-            )
-        }
-    }
-
-    Canvas(
-        modifier = modifier
-            .size(size)
-            .rotate(rotateDegree.value)
-    ) {
+    Canvas(modifier = modifier.size(size)) {
         val rectSize = Size(width = this.size.width / 4, height = this.size.height / 24)
-        for (i in 0 until 8) {
-            rotate(45f * i) {
+        val angleStep = 360f / segmentCount
+
+        for (i in 0 until segmentCount) {
+            rotate(angleStep * i) {
                 drawRect(
-                    color = color.copy(
-                        alpha = when (i) {
-                            0 -> alpha1.value
-                            1 -> alpha2.value
-                            2 -> alpha3.value
-                            3 -> alpha4.value
-                            4 -> alpha5.value
-                            5 -> alpha6.value
-                            6 -> alpha7.value
-                            7 -> alpha8.value
-                            else -> 1.0f
-                        }
-                    ),
+                    color = color.copy(alpha = alphas[i].value),
                     topLeft = center + Offset(x = rectSize.width, y = 0f),
                     size = rectSize,
                     style = Stroke(
@@ -140,6 +59,4 @@ fun InstaSpinner(
             }
         }
     }
-
-
 }

@@ -25,10 +25,10 @@ fun DoubleArc(
     size: Dp = 30.dp,
     durationMillis: Int = 2000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 8f,
-    color: Pair<Color,Color> = MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.primary,
+    strokeWidthRatio: Float = 0.1f,
+    color: Pair<Color, Color> = MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.primary,
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "DoubleArc")
 
     val angleMultiplier1 = transition.fractionTransition(
         initialValue = 0f,
@@ -49,6 +49,8 @@ fun DoubleArc(
     )
 
     Canvas(modifier = modifier.size(size)) {
+        val strokeWidth = this.size.minDimension * strokeWidthRatio
+
         rotate(degrees = angleMultiplier2.value) {
             drawArc(
                 color = color.first,

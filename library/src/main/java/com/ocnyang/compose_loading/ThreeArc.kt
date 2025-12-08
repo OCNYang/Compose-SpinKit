@@ -4,9 +4,7 @@ import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,19 +20,19 @@ import com.ocnyang.compose_loading.transition.fractionTransition
 @Preview
 @Composable
 fun ThreeArc(
-    size: Dp = 20.dp,
     modifier: Modifier = Modifier,
+    size: Dp = 20.dp,
     durationMillis: Int = 2000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 8f,
+    strokeWidthRatio: Float = 0.1f,
     color: Color = MaterialTheme.colorScheme.primary,
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "ThreeArc")
 
     val angleMultiplier1 = transition.fractionTransition(
         initialValue = 0f, targetValue = 360f,
         durationMillis = durationMillis / 2,
-        delayMillis = delayMillis / 2,
+        delayMillis = delayMillis,
         repeatMode = RepeatMode.Restart,
         easing = EaseInOut
     )
@@ -56,6 +54,8 @@ fun ThreeArc(
     )
 
     Canvas(modifier = modifier.size(size)) {
+        val strokeWidth = this.size.minDimension * strokeWidthRatio
+
         rotate(degrees = angleMultiplier1.value) {
             drawArc(
                 color = color,

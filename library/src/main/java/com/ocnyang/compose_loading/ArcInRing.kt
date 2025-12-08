@@ -13,20 +13,22 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ocnyang.compose_loading.transition.fractionTransition
 
 @Preview
 @Composable
 fun ArcInRing(
-    modifier: Modifier = Modifier.size(30.dp),
+    modifier: Modifier = Modifier,
+    size: Dp = 30.dp,
     durationMillis: Int = 2000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 10f,
+    strokeWidthRatio: Float = 0.1f,
     ringColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
     arcColor: Color = MaterialTheme.colorScheme.primary
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "ArcInRing")
 
     val angleMultiplier = transition.fractionTransition(
         initialValue = 0f, targetValue = 360f,
@@ -36,7 +38,9 @@ fun ArcInRing(
         easing = EaseInOut
     )
 
-    Canvas(modifier = modifier) {
+    Canvas(modifier = modifier.size(size)) {
+        val strokeWidth = this.size.minDimension * strokeWidthRatio
+
         drawArc(
             color = ringColor,
             startAngle = 0f,

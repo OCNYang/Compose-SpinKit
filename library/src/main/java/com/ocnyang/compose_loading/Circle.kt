@@ -17,6 +17,8 @@ import com.ocnyang.compose_loading.transition.fractionTransition
 import kotlin.math.cos
 import kotlin.math.sin
 
+private const val DEFAULT_CIRCLE_COUNT = 12
+
 @Preview(showBackground = true)
 @Composable
 fun Circle(
@@ -24,145 +26,35 @@ fun Circle(
     size: Dp = 40.dp,
     durationMillis: Int = 1200,
     color: Color = MaterialTheme.colorScheme.primary,
+    circleCount: Int = DEFAULT_CIRCLE_COUNT,
     circleSizeRatio: Float = 1.0f
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "Circle")
 
     val durationPerFraction = durationMillis / 2
 
-    val circleSizeMultiplier1 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 1,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier2 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 2,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier3 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 3,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier4 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 4,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier5 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 5,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier6 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationPerFraction,
-        offsetMillis = durationPerFraction / 6 * 6,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier7 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 7,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier8 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 8,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier9 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 9,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier10 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 10,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier11 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 11,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
-    val circleSizeMultiplier12 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        durationMillis = durationMillis / 2,
-        offsetMillis = durationPerFraction / 6 * 12,
-        repeatMode = RepeatMode.Reverse,
-        easing = EaseOutCubic
-    )
+    val circleSizeMultipliers = (0 until circleCount).map { index ->
+        transition.fractionTransition(
+            initialValue = 0f,
+            targetValue = 1f,
+            durationMillis = durationPerFraction,
+            offsetMillis = durationPerFraction / circleCount * (index + 1),
+            repeatMode = RepeatMode.Reverse,
+            easing = EaseOutCubic
+        )
+    }
 
     Canvas(modifier = modifier.size(size)) {
-        val pathRadius = (this.size.height / 2)
-        val radius1 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier1.value
-        val radius2 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier2.value
-        val radius3 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier3.value
-        val radius4 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier4.value
-        val radius5 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier5.value
-        val radius6 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier6.value
-        val radius7 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier7.value
-        val radius8 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier8.value
-        val radius9 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier9.value
-        val radius10 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier10.value
-        val radius11 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier11.value
-        val radius12 = this.size.height / 12 * circleSizeRatio * circleSizeMultiplier12.value
+        val pathRadius = this.size.height / 2
+        val baseRadius = this.size.height / circleCount * circleSizeRatio
 
-        for (i in 0 until 12) {
-            val angle = i / 12.toDouble() * 360.0
+        for (i in 0 until circleCount) {
+            val angle = i.toDouble() / circleCount * 360.0
             val offsetX = -(pathRadius * sin(Math.toRadians(angle))).toFloat() + pathRadius
             val offsetY = (pathRadius * cos(Math.toRadians(angle))).toFloat() + pathRadius
             drawCircle(
                 color = color,
-                radius = when (i) {
-                    0 -> radius1
-                    1 -> radius2
-                    2 -> radius3
-                    3 -> radius4
-                    4 -> radius5
-                    5 -> radius6
-                    6 -> radius7
-                    7 -> radius8
-                    8 -> radius9
-                    9 -> radius10
-                    10 -> radius11
-                    11 -> radius12
-                    else -> radius1
-                },
+                radius = baseRadius * circleSizeMultipliers[i].value,
                 center = Offset(offsetX, offsetY)
             )
         }

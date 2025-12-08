@@ -23,11 +23,10 @@ fun DoubleSector(
     size: Dp = 30.dp,
     durationMillis: Int = 1000,
     delayMillis: Int = 0,
-    strokeWidth: Float = 10f,
     count: Int = 4,
     colors: List<Color> = List(count) { MaterialTheme.colorScheme.primary },
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val transition = rememberInfiniteTransition(label = "DoubleSector")
 
     val angleMultiplier = transition.fractionTransition(
         initialValue = 0f,

@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ocnyang.compose_loading.ArcInRing
+import com.ocnyang.compose_loading.BouncingDots
 import com.ocnyang.compose_loading.ChasingDots
 import com.ocnyang.compose_loading.ChasingTwoDots
 import com.ocnyang.compose_loading.Circle
@@ -52,11 +53,14 @@ import com.ocnyang.compose_loading.DoubleRhombus
 import com.ocnyang.compose_loading.DoubleSector
 import com.ocnyang.compose_loading.FadingCircle
 import com.ocnyang.compose_loading.FoldingCube
+import com.ocnyang.compose_loading.GeometryLoading
 import com.ocnyang.compose_loading.InstaSpinner
 import com.ocnyang.compose_loading.OppositeArc
 import com.ocnyang.compose_loading.Pulse
 import com.ocnyang.compose_loading.Rainbow
+import com.ocnyang.compose_loading.RotatingArc
 import com.ocnyang.compose_loading.RotatingPlane
+import com.ocnyang.compose_loading.SemicircleBallTransfer
 import com.ocnyang.compose_loading.ThreeArc
 import com.ocnyang.compose_loading.ThreeBounce
 import com.ocnyang.compose_loading.ThreeTadpole
@@ -275,6 +279,35 @@ fun Greeting(type: Int) {
                 size = showBig.value.Size.second
             )
         } to "CircleWindmill",
+        @Composable {
+            BouncingDots(
+                colors = colors.value,
+                durationMillis = Speeds[showSpeedType.value].second / 3,
+                size = showBig.value.Size.second,
+                dotCount = 6
+            )
+        } to "BouncingDots",
+        @Composable {
+            GeometryLoading(
+                colors = colors.value,
+                durationMillis = Speeds[showSpeedType.value].second,
+                size = showBig.value.Size.second
+            )
+        } to "GeometryLoading",
+        @Composable {
+            RotatingArc(
+                color = colors.value[0],
+                durationMillis = 1000,
+                size = showBig.value.Size.second
+            )
+        } to "RotatingArc",
+        @Composable {
+            SemicircleBallTransfer(
+                color = colors.value[0],
+                durationMillis = Speeds[showSpeedType.value].second / 2,
+                size = showBig.value.Size.second
+            )
+        } to "SemicircleBallTransfer",
     )
 
     Column {
