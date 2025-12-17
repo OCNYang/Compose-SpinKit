@@ -1,7 +1,74 @@
 plugins {
+    kotlin("multiplatform")
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.compose")
     id("maven-publish")
+}
+
+kotlin {
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+        publishLibraryVariants("release", "debug")
+    }
+
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
+    // iOS targets - uncomment when ready to support iOS
+    // listOf(
+    //     iosX64(),
+    //     iosArm64(),
+    //     iosSimulatorArm64()
+    // ).forEach { iosTarget ->
+    //     iosTarget.binaries.framework {
+    //         baseName = "ComposeSpinKit"
+    //         isStatic = true
+    //     }
+    // }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(compose.preview)
+            }
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.common)
+            }
+        }
+
+        // iOS source sets - uncomment when iOS targets are enabled
+        // val iosX64Main by getting
+        // val iosArm64Main by getting
+        // val iosSimulatorArm64Main by getting
+        // val iosMain by creating {
+        //     dependsOn(commonMain)
+        //     iosX64Main.dependsOn(this)
+        //     iosArm64Main.dependsOn(this)
+        //     iosSimulatorArm64Main.dependsOn(this)
+        // }
+    }
 }
 
 android {
@@ -10,9 +77,6 @@ android {
 
     defaultConfig {
         minSdk = 21
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -21,47 +85,27 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
     buildFeatures {
         compose = true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
-}
-
-dependencies {
-
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
 publishing {
     publications {
-        register<MavenPublication>("release") {
+        create<MavenPublication>("release") {
             groupId = "com.github.ocnyang"
             artifactId = "compose-spinkit"
-            version = "1.0.4"
-
-            afterEvaluate {
-                from(components["release"])
-            }
+            version = "2.0.0"
         }
     }
 }
