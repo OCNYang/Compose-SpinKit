@@ -12,14 +12,24 @@ Add loading spinners in Android Jetpack Compose.
 <img src="https://cdn.jsdelivr.net/gh/ocnyang/compose-spinkit@master/res/demo_colorful.gif" width="300px" alt="preview-colorful"/>
 </div>
 
-## Gradle Dependency
+## Gradle Dependency [![](https://jitpack.io/v/OCNYang/Compose-SpinKit.svg)](https://jitpack.io/#OCNYang/Compose-SpinKit)
 
 ```groovy
 dependencies {
-    implementation("com.github.OCNYang:Compose-SpinKit:1.0.4") {
+    implementation("com.github.OCNYang.Compose-SpinKit:library:1.0.5") {
         exclude("com.github.jitpack")
     }
 }
+```
+
+all jitpack build
+```
+✅ Build artifacts:
+com.github.OCNYang.Compose-SpinKit:library-desktop:1.0.5
+com.github.OCNYang.Compose-SpinKit:library-android-debug:1.0.5
+com.github.OCNYang.Compose-SpinKit:library-android:1.0.5
+com.github.OCNYang.Compose-SpinKit:library:1.0.5
+com.github.OCNYang.Compose-SpinKit:compose-spinkit:1.0.5
 ```
 
 ## Usage
